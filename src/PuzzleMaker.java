@@ -58,6 +58,9 @@ public class PuzzleMaker {
                 PuzzleSolver sol = DFSSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             }
+            else{
+                throw new UnsupportedOperationException();
+            }
         }
         catch (UnsupportedOperationException uoe) {
             System.err.println("Wrong arguments!");
