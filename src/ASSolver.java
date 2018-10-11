@@ -52,6 +52,7 @@ public class ASSolver extends PuzzleSolver {
             }
         }
         return pathLength;
+        //return 0;
     }
 
     private void ass(PuzzleState state){
@@ -83,7 +84,7 @@ public class ASSolver extends PuzzleSolver {
             newState = PuzzleState.moveUp(state);
             // Checks if exist and not already visited
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState));
+                newState.setManDistance(manhattan(newState)+heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -91,7 +92,7 @@ public class ASSolver extends PuzzleSolver {
             // Move down
             newState = PuzzleState.moveDown(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState));
+                newState.setManDistance(manhattan(newState)+heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -99,7 +100,7 @@ public class ASSolver extends PuzzleSolver {
             // Move left
             newState = PuzzleState.moveLeft(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState));
+                newState.setManDistance(manhattan(newState)+heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -107,7 +108,7 @@ public class ASSolver extends PuzzleSolver {
             // Move right
             newState = PuzzleState.moveRight(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState));
+                newState.setManDistance(manhattan(newState)+heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }

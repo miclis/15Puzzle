@@ -13,23 +13,22 @@ public abstract class PuzzleSolver {
         PuzzleState current = goal, parent;
 
         StringBuilder builder = new StringBuilder();
-        System.out.println("This is the state sequence from solved state to randomized state(reverse order): ");
+        System.out.println("This is the state sequence (reverse order): ");
         System.out.println("Goal State: ");
 
         // Prints main output
         if (current != null) {
             while (true) {
-                // Prints current level in tree
-                System.out.println("Level in tree: " + current.getLevel());
-
-                // If at top of the tree == initial randomized state
+                // If at top of the tree == initial state
                 if (current.getLevel() == 0) {
-                    System.out.println("Program reached the initial, randomized start state of the puzzle: ");
+                    System.out.println("Program reached the goal state of the puzzle!\n");
                 }
                 else {
+                    // Prints current level in tree
+                    System.out.println("Level in tree: " + current.getLevel()); // prints current state
                     System.out.println("Move: " + current.getMove());   // prints movement direction
-                }
 
+                }
                 System.out.println(current.toString()); // prints current state
                 parent = current.getPrev(); // sets parent to current state's previous state
 
@@ -42,9 +41,10 @@ public abstract class PuzzleSolver {
             }
 
             System.out.println("This solving technique took: " + time + " ms"); //  Time taken
+            System.out.println("Solution length: " + goal.getLevel());
             goal = null;
             // Writes sequence of moves in reverse order (correct one)
-            return "This is the sequence of moves from randomized to goal states: " + builder.reverse().toString();
+            return "This is the sequence of moves from initial state to the goal state: " + builder.reverse().toString();
         } else
             {
             // System ran out of memory...

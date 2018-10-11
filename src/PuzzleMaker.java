@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 
 public class PuzzleMaker {
 
@@ -19,46 +20,53 @@ public class PuzzleMaker {
             // Reads arguments/data from console
             Puzzle puzzle = Puzzle.getInstance();
             int size = (int)Math.sqrt(scanner.nextInt() + 1); // converts String to int and makes sure value is correct
-            String search = scanner.next(); // search type
-            String state = scanner.next(); // starting state type
+            String type = scanner.next(); // search type
 
             // Checks if correct arguments were given
-            if (size < 2 || !(search.equals("bfs") || search.equals("dfs") ||
-                    state.equals("goal") || state.equals("custom"))) {
+            if (size < 2 || !(type.equals("bfs") || type.equals("dfs") || type.equals("ass"))) {
                 throw new UnsupportedOperationException();
             }
-            // If custom state
-            if (state.equals("custom")) {
+
+            // Initializing board from a file
+            String fileName = "input8_2.txt";
+            String text = null;
+            try {
                 int[][] puzzleArray = new int[size][size];
-                for(int i = 0; i < size; i++){
-                    for(int j = 0; j < size; j++){
-                        puzzleArray[i][j] = scanner.nextInt();  // scans and stores next int in the array
+                Scanner sc = new Scanner(new BufferedReader(new FileReader(fileName)));
+                while(sc.hasNextLine()) {
+                    for (int i = 0; i < size; i++) {
+                        String[] line = sc.nextLine().trim().split(" ");
+                        for (int j = 0; j < size; j++) {
+                            puzzleArray[i][j] = Integer.parseInt(line[j]);
+                        }
                     }
                 }
-                puzzle.initialize(puzzleArray, size);   // initialize the custom board
+                puzzle.initialize(puzzleArray, size);
+                sc.close();
             }
-            else {
-                puzzle.initialize(size);    // initialize goal board (original)
+            catch (FileNotFoundException e)
+            {
+                System.out.println("Unable to open file '" + fileName + "'.");
             }
             scanner.close();
 
             // Prints initial data:
             System.out.println("Initial board:");
             System.out.println(puzzle.toString());
-            puzzle.randomize();
-            System.out.println("Randomized board:");
-            System.out.println(puzzle.toString());
+            //puzzle.randomize();   // uncomment to enable randomization from the given input (input will be your goal)
+            //System.out.println("Randomized board:");
+            //System.out.println(puzzle.toString());
 
             // Checks which search algorithm was chosen
-            if (search.equals("bfs")) {
+            if (type.equals("bfs")) {
                 PuzzleSolver sol = BFSSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             }
-            else if (search.equals("dfs")){
+            else if (type.equals("dfs")){
                 PuzzleSolver sol = DFSSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             }
-            else if (search.equals("ass")){
+            else if (type.equals("ass")){
                 PuzzleSolver sol = ASSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             }
