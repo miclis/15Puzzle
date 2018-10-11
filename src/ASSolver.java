@@ -2,12 +2,19 @@ import java.util.*;
 
 public class ASSolver extends PuzzleSolver {
 
+    // For comparing manhattan distance
+    private Comparator<PuzzleState> statePriorityComparator = Comparator.comparingInt(PuzzleState::getManDistance);
+
     private static ASSolver instance = new ASSolver();
-    //private PriorityQueue<PuzzleState> stateQueue = new PriorityQueue<>(null, heuristic());
-    private HashSet<PuzzleState> stateSet = new HashSet<>();
+    private PriorityQueue<PuzzleState> stateQueue = new PriorityQueue<>(statePriorityComparator);
+    private Set<PuzzleState> stateSet = new HashSet<>();
     private int statePathLength = 0;
 
     public ASSolver() {
+    }
+
+    public static ASSolver getInstance() {
+        return instance;
     }
 
     /** COST CALCULATION */
@@ -47,18 +54,65 @@ public class ASSolver extends PuzzleSolver {
         return pathLength;
     }
 
-    private void ass(PuzzleState s){
+    private void ass(PuzzleState state){
 
+        // Clears memory
+        stateQueue.clear();
+        stateSet.clear();
 
+        // Adds input state
+        stateQueue.add(state);
+        stateSet.add(state);
 
+        PuzzleState newState;   // new puzzle state for moves
 
+        while (!stateQueue.isEmpty()){
+             state = stateQueue.poll();
+                    // If goal state
+                    if(state.isGoalState()){
+                        goal = state;
+                        break;
+                    }
+            // Memory limit check
+            if (Runtime.getRuntime().freeMemory() < (.0001) * Runtime.getRuntime().totalMemory()){
+                break;
+            }
 
+            /** CASES */
+            // Move up
+            newState = PuzzleState.moveUp(state);
+            // Checks if exist and not already visited
+            if (newState != null && !stateSet.contains(newState)) {
+                newState.setManDistance(manhattan(newState));
+                stateSet.add(newState);
+                stateQueue.add(newState);
+            }
 
+            // Move down
+            newState = PuzzleState.moveDown(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                newState.setManDistance(manhattan(newState));
+                stateSet.add(newState);
+                stateQueue.add(newState);
+            }
 
+            // Move left
+            newState = PuzzleState.moveLeft(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                newState.setManDistance(manhattan(newState));
+                stateSet.add(newState);
+                stateQueue.add(newState);
+            }
 
+            // Move right
+            newState = PuzzleState.moveRight(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                newState.setManDistance(manhattan(newState));
+                stateSet.add(newState);
+                stateQueue.add(newState);
+            }
 
-
-
+        }
     }
 
     public String solve(Puzzle puzzle) {

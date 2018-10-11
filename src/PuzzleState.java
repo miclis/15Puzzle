@@ -1,4 +1,4 @@
-public class PuzzleState {
+public class PuzzleState {    // implements Comparable due to A*
 
     private int size; // size of array
     private int[][] puzzleArray; // array of puzzle numbers
@@ -9,16 +9,19 @@ public class PuzzleState {
     private boolean isGoalState;    // true if it is a goal state
     private char move;  // move to get to this puzzle state
     private PuzzleState prev;   // previous state
+    private int manDistance;
 
-    /** CONSTRUCTORS */
-    public PuzzleState(int sizeInput){
+    /**
+     * CONSTRUCTORS
+     */
+    public PuzzleState(int sizeInput) {
 
         this.size = sizeInput;  // sets the size
         puzzleArray = new int[size][size];  // makes puzzle
         goalState = new int[size][size];    // makes puzzle goal state
 
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++){
+            for (int j = 0; j < size; j++) {
                 puzzleArray[i][j] = (i * size) + j;
                 goalState[i][j] = (i * size) + j;
             }
@@ -26,6 +29,7 @@ public class PuzzleState {
         // Sets initial 0 index
         setZeroRow(0);
         setZeroColumn(0);
+        manDistance = 0;
         isGoalState = true; // sets the goal state to true
     }
 
@@ -34,15 +38,15 @@ public class PuzzleState {
         this(Puzzle.getInstance());
     }
 
-     // Constructor to make a new puzzle state from a puzzle
-    public PuzzleState(Puzzle puzzle){
+    // Constructor to make a new puzzle state from a puzzle
+    public PuzzleState(Puzzle puzzle) {
 
         this.size = puzzle.getSize();   // sets the same size
         puzzleArray = new int[size][size];  // makes new puzzle state array
         this.level = puzzle.getLevel(); // sets level in a  tree
 
         // Copies values
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 puzzleArray[i][j] = puzzle.getNumber(i, j);
             }
@@ -52,9 +56,11 @@ public class PuzzleState {
         this.isGoalState = puzzle.isGoalState();
     }
 
-    /** FUNCTIONS */
+    /**
+     * FUNCTIONS
+     */
     // Copies state
-    private void copy(PuzzleState state){
+    private void copy(PuzzleState state) {
 
         this.size = state.getSize();
         this.zeroRow = state.getZeroRow();
@@ -62,20 +68,20 @@ public class PuzzleState {
         this.isGoalState = state.getGoalState();
         puzzleArray = new int[size][size];
 
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 puzzleArray[i][j] = state.getNumber(i, j);
             }
         }
     }
 
-    public boolean isGoalState(){
+    public boolean isGoalState() {
 
-        for (int i = 0; i < size; i++){
-            for (int j = 0; j < size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
 
                 // If value is not the same as in the goal state
-                if (puzzleArray[i][j] != (i * getSize() + j)){
+                if (puzzleArray[i][j] != (i * getSize() + j)) {
 
                     isGoalState = false;
                     return isGoalState;
@@ -88,8 +94,10 @@ public class PuzzleState {
         return isGoalState;
     }
 
-    /** MOVEMENTS */
-    public static PuzzleState moveLeft(PuzzleState s){
+    /**
+     * MOVEMENTS
+     */
+    public static PuzzleState moveLeft(PuzzleState s) {
 
         // Checks if the edge
         if (s.getZeroColumn() <= 0)
@@ -102,11 +110,9 @@ public class PuzzleState {
         try {
             // Set the next state to the new instance of the input state.
             nextState = s.getClass().newInstance();
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             System.err.println("Error creating a new down-shifted puzzle state.");
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             System.err.println("Error accessing new puzzle instance.");
         }
 
@@ -126,7 +132,7 @@ public class PuzzleState {
         return nextState;
     }
 
-    public static PuzzleState moveRight(PuzzleState s){
+    public static PuzzleState moveRight(PuzzleState s) {
 
         // Checks if the edge
         if (s.getZeroColumn() >= s.getSize() - 1)
@@ -162,7 +168,7 @@ public class PuzzleState {
         return nextState;
     }
 
-    public static PuzzleState moveUp(PuzzleState s){
+    public static PuzzleState moveUp(PuzzleState s) {
 
         // Checks if the edge
         if (s.getZeroRow() <= 0)
@@ -199,10 +205,10 @@ public class PuzzleState {
         return nextState;
     }
 
-    public static PuzzleState moveDown(PuzzleState s){
+    public static PuzzleState moveDown(PuzzleState s) {
 
         // Checks if the edge
-        if(s.getZeroRow() >= s.getSize() - 1)
+        if (s.getZeroRow() >= s.getSize() - 1)
             return null;
 
         // Clears the next state
@@ -236,81 +242,96 @@ public class PuzzleState {
         return nextState;
     }
 
-    /** GETTERS */
-    public int getLevel(){
+    /**
+     * GETTERS
+     */
+    public int getLevel() {
         return this.level;
     }
 
-    public int getSize(){
+    public int getSize() {
 
         return this.size;
     }
 
-    public int[][] getPuzzleArray(){
+    public int[][] getPuzzleArray() {
 
         return this.puzzleArray;
     }
 
-    public int getZeroColumn(){
+    public int getZeroColumn() {
         return this.zeroColumn;
     }
 
-    public int getZeroRow(){
+    public int getZeroRow() {
         return this.zeroRow;
     }
 
-    public PuzzleState getPrev(){
+    public PuzzleState getPrev() {
         return prev;
     }
 
-    public boolean getGoalState(){
+    public boolean getGoalState() {
         return this.isGoalState;
     }
 
+    // Needed for assigning manhattan distance for comparison in A*
+    public int getManDistance() {
+        return manDistance;
+    }
+
     // Get the direction of the move to get to this state.
-    public char getMove(){
+    public char getMove() {
         return this.move;
     }
 
-    public int getNumber(int row, int column){
+    public int getNumber(int row, int column) {
         return this.puzzleArray[row][column];
     }
 
-    /** SETTERS */
-    public void setLevel(int n){
+    /**
+     * SETTERS
+     */
+    public void setLevel(int n) {
         this.level = n;
     }
 
-    private void setMove(char c){
+    private void setMove(char c) {
         this.move = c;
     }
 
-    private void setPrev(PuzzleState s){
+    private void setPrev(PuzzleState s) {
         this.prev = s;
     }
 
-    public void setZeroColumn(int column){
+    public void setZeroColumn(int column) {
         this.zeroColumn = column;
     }
 
-    public void setZeroRow(int row){
+    public void setZeroRow(int row) {
         this.zeroRow = row;
     }
 
-    public void setNumber(int row, int column, int number){
+    public void setNumber(int row, int column, int number) {
         /* Sets the value at the specified index of the puzzle to the input number. */
         this.puzzleArray[row][column] = number;
     }
 
-    /** OVERRIDES */
+    public void setManDistance(int manDistance) {
+        this.manDistance = manDistance;
+    }
+
+    /**
+     * OVERRIDES
+     */
     @Override
-    public String toString(){
+    public String toString() {
 
         StringBuilder builder = new StringBuilder();
         String newLine = System.getProperty("line.separator");
 
-        for(int n = 0; n < puzzleArray.length; n++){
-            for (int j = 0; j < puzzleArray[n].length; j++){
+        for (int n = 0; n < puzzleArray.length; n++) {
+            for (int j = 0; j < puzzleArray[n].length; j++) {
                 builder.append(puzzleArray[n][j] + " ");
             }
             builder.append(newLine); // new line
@@ -335,8 +356,8 @@ public class PuzzleState {
                 return false;
 
             // Checks if numbers at indexes are the same
-            for (int i = 0; i < getSize(); i++){
-                for (int j = 0; j < getSize(); j++){
+            for (int i = 0; i < getSize(); i++) {
+                for (int j = 0; j < getSize(); j++) {
                     if (state.getNumber(i, j) != puzzleArray[i][j])
                         return false;
                 }
@@ -345,4 +366,5 @@ public class PuzzleState {
         }
         return false; // not a PuzzleState
     }
+    // Method which allows to compare manhattan distance with A* algorithm
 }

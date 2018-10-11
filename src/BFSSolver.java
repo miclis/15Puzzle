@@ -9,8 +9,8 @@ import java.util.Set;
 public class BFSSolver extends PuzzleSolver{
 
     private static BFSSolver instance = new BFSSolver();
-    private Set<PuzzleState> stateSet = new HashSet<PuzzleState>(); // HashSet for puzzle states, eliminates duplicates
-    private Queue<PuzzleState> stateQueue = new LinkedList<PuzzleState>();  // FIFO Queue for puzzle states
+    private Set<PuzzleState> stateSet = new HashSet<>(); // HashSet for puzzle states, eliminates duplicates
+    private Queue<PuzzleState> stateQueue = new LinkedList<>();  // FIFO Queue for puzzle states
 
     private BFSSolver() {
 

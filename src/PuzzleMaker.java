@@ -58,6 +58,10 @@ public class PuzzleMaker {
                 PuzzleSolver sol = DFSSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             }
+            else if (search.equals("ass")){
+                PuzzleSolver sol = ASSolver.getInstance();
+                System.out.println(sol.solve(puzzle));  // prints solution sequence
+            }
             else{
                 throw new UnsupportedOperationException();
             }
