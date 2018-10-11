@@ -14,26 +14,7 @@ public class PuzzleState {    // implements Comparable due to A*
     /**
      * CONSTRUCTORS
      */
-    public PuzzleState(int sizeInput) {
-
-        this.size = sizeInput;  // sets the size
-        puzzleArray = new int[size][size];  // makes puzzle
-        goalState = new int[size][size];    // makes puzzle goal state
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                puzzleArray[i][j] = (i * size) + j;
-                goalState[i][j] = (i * size) + j;
-            }
-        }
-        // Sets initial 0 index
-        setZeroRow(0);
-        setZeroColumn(0);
-        manDistance = 0;
-        isGoalState = true; // sets the goal state to true
-    }
-
-    // Makes new puzzle state from puzzle instance.
+    // Makes new puzzle state from puzzle instance, used during moves/ changing parents
     PuzzleState() {
         this(Puzzle.getInstance());
     }
@@ -84,14 +65,14 @@ public class PuzzleState {    // implements Comparable due to A*
                 if (puzzleArray[i][j] != (i * getSize() + j)) {
 
                     isGoalState = false;
-                    return isGoalState;
+                    return false;
                 }
             }
         }
 
         // All numbers in correct positions so it is a goal state
         isGoalState = true;
-        return isGoalState;
+        return true;
     }
 
     /**

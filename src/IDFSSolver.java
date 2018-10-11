@@ -2,20 +2,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-// Depth-First Search (dfs).
+// Iterative Deepened Depth-First Search (idfs).
 // Queue is used to approach the depth-first search tree.
 
-public class DFSSolver extends PuzzleSolver{
+public class IDFSSolver extends PuzzleSolver{
 
-    private static DFSSolver instance = new DFSSolver();
+    private static IDFSSolver instance = new IDFSSolver();
     protected Set<PuzzleState> stateSet = new HashSet<PuzzleState>();
     public static final int MAX_DEPTH = 30;
 
-    private DFSSolver(){
+    private IDFSSolver(){
 
     }
 
-    public static DFSSolver getInstance(){
+    public static IDFSSolver getInstance(){
         return instance;
     }
 
@@ -26,7 +26,7 @@ public class DFSSolver extends PuzzleSolver{
 
         // Checks states until depth limit is reached
         for(int i = 1; i <= depthLimit; i++){
-            dfs(state, i);  // depth-first search at this level
+            idfs(state, i);  // depth-first search at this level
 
             // If goal state
             if(goal != null)
@@ -39,7 +39,7 @@ public class DFSSolver extends PuzzleSolver{
         }
     }
 
-    void dfs(PuzzleState state,int depth){
+    void idfs(PuzzleState state,int depth){
 
         // End recursion - depth
         if(depth < 0)
@@ -83,7 +83,7 @@ public class DFSSolver extends PuzzleSolver{
         // Checks if exist and not already visited
         if(newState != null && !stateSet.contains(newState)){
             stateSet.add(newState);
-            dfs(newState, depth - 1);
+            idfs(newState, depth - 1);
             // If goal state
             if(goal != null)
                 return;
@@ -101,7 +101,11 @@ public class DFSSolver extends PuzzleSolver{
         iterativeDeepening(state, MAX_DEPTH);   // starts dfs search
 
         time = System.currentTimeMillis() - startTime;  // calculate time
-
+        // Get the Java runtime
+        Runtime runtime = Runtime.getRuntime();
+        // Run the garbage collector
+        runtime.gc();
+        memory = runtime.totalMemory() - runtime.freeMemory();
         return getSequence();   // returns sequence of moves
     }
 }

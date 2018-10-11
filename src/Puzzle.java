@@ -1,11 +1,12 @@
 import java.util.Random;
 
+
 public class Puzzle {
 
     private static Puzzle instance = new Puzzle();  // A static instance of Puzzle for use throughout package.
     private int size;   // The puzzle length
     private int[][] puzzleArray;    // Array of puzzle numbers
-    private static int[][] goalState;   // Goal state
+    private static int[][] goalState;   // Goal state with 0 at [0][0]
     private int zeroColumn; // 0 puzzle column index
     private int zeroRow;    // 0 puzzle row index
     private int level;  // The level of this puzzle state in the tree
@@ -13,20 +14,23 @@ public class Puzzle {
 
     /** CONSTRUCTORS */
     public Puzzle(){
-        this(3);
+        this(4);
     }
 
     public Puzzle(int sizeInput){
         initialize(sizeInput);
     }
-
+/**
+ * 15 bfs input15 korzysta z initialize(int sizeInput), a nie tego drugiego
+ * sizeInput jest zawsze 3 z konstruktora???
+*/
     // Initializes goal state (0 is at position [0][0])
     public void initialize(int sizeInput){
 
         this.size = sizeInput;  // sets size
         puzzleArray = new int[size][size];  // makes array
         goalState = new int[size][size];    // makes goal state array
-        // Fills arrays
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++){
                 puzzleArray[i][j] = (i * size) + j;
@@ -39,9 +43,8 @@ public class Puzzle {
         isGoalState = true; // initialize as goal state
     }
 
-    // Initializes as custom state
+    // Initializes initial board / custom state
     public void initialize(int[][] puzzle, int sizeInput){
-
         this.size = sizeInput;  // sets size
         puzzleArray = new int[size][size];  // makes array
         // Copies custom numbers
@@ -63,18 +66,15 @@ public class Puzzle {
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-
-                // If value is not the same as in the goal state
+                // If value is not the same as in the goalState1
                 if (puzzleArray[i][j] != goalState[i][j]){
 
                     isGoalState = false;
-                    return isGoalState;
+                    return false;
                 }
             }
         }
-
         // All numbers in correct positions so it is a goal state
-        isGoalState = true;
         return isGoalState;
     }
 

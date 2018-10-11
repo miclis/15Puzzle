@@ -88,7 +88,11 @@ public class BFSSolver extends PuzzleSolver{
         bfs(state); // starts bfs search
 
         time = System.currentTimeMillis() - startTime;  // calculates time
-
+        // Get the Java runtime
+        Runtime runtime = Runtime.getRuntime();
+        // Run the garbage collector
+        runtime.gc();
+        memory = runtime.totalMemory() - runtime.freeMemory();
         return getSequence();   // returns sequence of moves
     }
 }

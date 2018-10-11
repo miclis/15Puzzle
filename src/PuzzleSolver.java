@@ -4,6 +4,8 @@ public abstract class PuzzleSolver {
     // The goal state, when non-null, puzzle is in goal state.
     protected PuzzleState goal;
     protected long time;    // time taken to solve
+    protected long memory;  // memory used to solve
+    private static final long MEGABYTE = 1024L * 1024L;
 
     public abstract String solve(Puzzle puzzle);    // writes string of moves of zero to reach goal from randomized
 
@@ -41,6 +43,7 @@ public abstract class PuzzleSolver {
             }
 
             System.out.println("This solving technique took: " + time + " ms"); //  Time taken
+            System.out.println("Memory used: " + memory + " B\t\t| (" + bytesToMegabytes(memory) + "MB)");
             System.out.println("Solution length: " + goal.getLevel());
             goal = null;
             // Writes sequence of moves in reverse order (correct one)
@@ -50,5 +53,9 @@ public abstract class PuzzleSolver {
             // System ran out of memory...
             return "System ran out of memory!";
         }
+    }
+    // Function used to change bytes to Megabytes
+    private static long bytesToMegabytes(long bytes) {
+        return bytes / MEGABYTE;
     }
 }

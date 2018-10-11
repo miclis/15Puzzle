@@ -1,18 +1,18 @@
 import java.util.*;
 
-public class ASSolver extends PuzzleSolver {
+public class BSTSolver extends PuzzleSolver {
 
     // For comparing manhattan distance
     private Comparator<PuzzleState> statePriorityComparator = Comparator.comparingInt(PuzzleState::getManDistance);
 
-    private static ASSolver instance = new ASSolver();
+    private static BSTSolver instance = new BSTSolver();
     private PriorityQueue<PuzzleState> stateQueue = new PriorityQueue<>(statePriorityComparator);
     private Set<PuzzleState> stateSet = new HashSet<>();
 
-    public ASSolver() {
+    public BSTSolver() {
     }
 
-    public static ASSolver getInstance() {
+    public static BSTSolver getInstance() {
         return instance;
     }
 
@@ -54,7 +54,7 @@ public class ASSolver extends PuzzleSolver {
         //return 0;
     }
 
-    private void ass(PuzzleState state){
+    private void bst(PuzzleState state){
 
         // Clears memory
         stateQueue.clear();
@@ -67,12 +67,12 @@ public class ASSolver extends PuzzleSolver {
         PuzzleState newState;   // new puzzle state for moves
 
         while (!stateQueue.isEmpty()){
-             state = stateQueue.poll();
-                    // If goal state
-                    if(state.isGoalState()){
-                        goal = state;
-                        break;
-                    }
+            state = stateQueue.poll();
+            // If goal state
+            if(state.isGoalState()){
+                goal = state;
+                break;
+            }
             // Memory limit check
             if (Runtime.getRuntime().freeMemory() < (.0001) * Runtime.getRuntime().totalMemory()){
                 break;
@@ -83,7 +83,7 @@ public class ASSolver extends PuzzleSolver {
             newState = PuzzleState.moveUp(state);
             // Checks if exist and not already visited
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState)+heuristic(newState));
+                newState.setManDistance(heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -91,7 +91,7 @@ public class ASSolver extends PuzzleSolver {
             // Move down
             newState = PuzzleState.moveDown(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState)+heuristic(newState));
+                newState.setManDistance(heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -99,7 +99,7 @@ public class ASSolver extends PuzzleSolver {
             // Move left
             newState = PuzzleState.moveLeft(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState)+heuristic(newState));
+                newState.setManDistance(heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -107,7 +107,7 @@ public class ASSolver extends PuzzleSolver {
             // Move right
             newState = PuzzleState.moveRight(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(manhattan(newState)+heuristic(newState));
+                newState.setManDistance(heuristic(newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -120,7 +120,7 @@ public class ASSolver extends PuzzleSolver {
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        ass(state); // starts bfs search
+        bst(state); // starts bfs search
 
         time = System.currentTimeMillis() - startTime;  // calculates time
         // Get the Java runtime
