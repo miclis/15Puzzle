@@ -5,7 +5,7 @@ public class PuzzleMaker {
     /**
      * Takes four parameters:
      * 1. Puzzle size  -   number (3, 8, 15)
-     * 2. Search type  -   String (bfs | idfs | ass | bst)
+     * 2. Search type  -   String (bfs | dfs | idfs | ass | bst)
      * 3. Input file name - String (name of the file located in project's dir, without ".txt")
      * Examples of commands:    8 bfs input8_2
      *                          15 ass input15
@@ -27,7 +27,8 @@ public class PuzzleMaker {
             String type = scanner.next(); // search type
             Puzzle puzzle = Puzzle.getInstance();
             // Checks if correct arguments were given
-            if (size < 2 || !(type.equals("bfs") || type.equals("idfs") || type.equals("ass") || type.equals("bst"))) {
+            if (size < 2 || !(type.equals("bfs") || type.equals("dfs") || type.equals("idfs") || type.equals("ass") ||
+                    type.equals("bst"))) {
                 throw new UnsupportedOperationException();
 
             }
@@ -62,6 +63,9 @@ public class PuzzleMaker {
             // Checks which search algorithm was chosen
             if (type.equals("bfs")) {
                 PuzzleSolver sol = BFSSolver.getInstance();
+                System.out.println(sol.solve(puzzle));  // prints solution sequence
+            } else if (type.equals("dfs")) {
+                PuzzleSolver sol = DFSSolver.getInstance();
                 System.out.println(sol.solve(puzzle));  // prints solution sequence
             } else if (type.equals("idfs")) {
                 PuzzleSolver sol = IDFSSolver.getInstance();
