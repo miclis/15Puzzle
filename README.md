@@ -31,6 +31,7 @@ The program takes up to four parameters:
      1   -   Simple heuristic function that calculates how many puzzles are in a wrong position
      2   -   Manhattan Distance function, which calculates the value based on how far the tiles are from their
              positions
-Examples of invocation:  8 bfs 8_2
-                         15 ass 15_1 2
-                         8  bst 8_1 1
+Examples of invocation:
+8 bfs 8_2
+15 ass 15_1 2
+8  bst 8_1 1
