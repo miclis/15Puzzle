@@ -1,5 +1,10 @@
 import java.util.*;
-
+/**
+* A* combines the advantages of Best-first Search and Uniform Cost Search.
+* F(n) = g(n) + h(n)
+* h(n) - an estimated distance between any random vertex n and target vertex
+* g(n) - the actual distance between the start point and any vertex n
+* */
 public class ASSolver extends PuzzleSolver {
 
     // For comparing manhattan distance

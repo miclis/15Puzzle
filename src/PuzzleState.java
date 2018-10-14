@@ -139,7 +139,6 @@ public class PuzzleState {    // implements Comparable due to A*
         nextState.setNumber(s.getZeroRow(), s.getZeroColumn() + 1, 0);
         nextState.setNumber(s.getZeroRow(), s.getZeroColumn(), temp);
         nextState.setZeroColumn(s.getZeroColumn() + 1); // changes 0's index
-
         nextState.setMove('R'); // sets move to Right
 
         // Changes previous state to input state
@@ -213,7 +212,6 @@ public class PuzzleState {    // implements Comparable due to A*
         nextState.setNumber(s.getZeroRow() + 1, s.getZeroColumn(), 0);
         nextState.setNumber(s.getZeroRow(), s.getZeroColumn(), temp);
         nextState.setZeroRow(s.getZeroRow() + 1);   // changes 0's index
-
         nextState.setMove('D'); // sets move to Down
 
         // Changes previous state to input state

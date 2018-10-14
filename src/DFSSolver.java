@@ -1,73 +1,92 @@
 import java.util.HashSet;
+import java.util.Stack;
 import java.util.Set;
 
-
-// Iterative Deepened Depth-First Search (idfs).
-// Queue is used to approach the depth-first search tree.
+// Iterative Depth-First Search (dfs).
+// Queue is used to approach the breadth-first search tree.
 
 public class DFSSolver extends PuzzleSolver{
 
     private static DFSSolver instance = new DFSSolver();
-    protected Set<PuzzleState> stateSet = new HashSet<>();
+    private Set<PuzzleState> stateSet = new HashSet<>(); // HashSet for puzzle states, eliminates duplicates
+    private Stack<PuzzleState> stateStack = new Stack<>();
 
-    private DFSSolver(){
+    private DFSSolver() {
 
     }
 
-    public static DFSSolver getInstance(){
+    public static DFSSolver getInstance() {
         return instance;
     }
 
-    void dfs(PuzzleState state){
+    private void dfs(PuzzleState state) {
 
-        if(!stateSet.contains(state))
-        {
-            stateSet.add(state);
-        }
-        // Save state
-        if(state.isGoalState()){
-            goal = state;
-        }
+        // Clears memory
+        stateSet.clear();
+        stateStack.clear();
+
+        // Adds input state
+        stateSet.add(state);
+        stateStack.push(state);
+
         PuzzleState newState;   // new puzzle state for moves
-        /** CASES */
-        // Move up
-        newState = PuzzleState.moveUp(state);
-        // Checks if exist and not already visited
-        Call(newState);
 
-        // Move down
-        newState = PuzzleState.moveDown(state);
-        // Checks if exist and not already visited
-        Call(newState);
+        while (!stateStack.isEmpty()){
 
-        // Move left
-        newState = PuzzleState.moveLeft(state);
-        // Checks if exist and not already visited
-        Call(newState);
+            state = stateStack.pop();  // takes 1 element & removes it
 
-        // Move right
-        newState = PuzzleState.moveRight(state);
-        // Checks if exist and not already visited
-        Call(newState);
-    }
+            // If goal state
+            if (state.isGoalState()) {
+                goal = state;
+                break;
+            }
 
-    void Call(PuzzleState newState){
+            // Memory limit check
+            if (Runtime.getRuntime().freeMemory() < (.0001) * Runtime.getRuntime().totalMemory()){
+                break;
+            }
 
-        // Checks if exist and not already visited
-        if(newState != null && !stateSet.contains(newState)){
-            stateSet.add(newState);
-            dfs(newState);
+            /** CASES */
+            // Move up
+            newState = PuzzleState.moveUp(state);
+            // Checks if exist and not already visited
+            if (newState != null && !stateSet.contains(newState)) {
+                stateSet.add(newState);
+                stateStack.push(newState);
+            }
+
+            // Move down
+            newState = PuzzleState.moveDown(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                stateSet.add(newState);
+                stateStack.push(newState);
+            }
+
+            // Move left
+            newState = PuzzleState.moveLeft(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                stateSet.add(newState);
+                stateStack.push(newState);
+            }
+
+            // Move right
+            newState = PuzzleState.moveRight(state);
+            if (newState != null && !stateSet.contains(newState)) {
+                stateSet.add(newState);
+                stateStack.push(newState);
+            }
         }
     }
 
     public String solve(Puzzle puzzle) {
 
-        long startTime = System.currentTimeMillis();    // starts the timer
+        long startTime = System.currentTimeMillis();    // starts timer
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        dfs(state);
-        time = System.currentTimeMillis() - startTime;  // calculate time
+        dfs(state); // starts bfs search
+
+        time = System.currentTimeMillis() - startTime;  // calculates time
         // Get the Java runtime
         Runtime runtime = Runtime.getRuntime();
         // Run the garbage collector
