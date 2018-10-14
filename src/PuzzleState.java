@@ -1,19 +1,18 @@
 public class PuzzleState {    // implements Comparable due to A*
 
-    private int size; // size of array
+    private int size; // size of an array
     private int[][] puzzleArray; // array of puzzle numbers
-    private static int[][] goalState; // array representing goal state
-    private int zeroColumn;
-    private int zeroRow;
+    private int zeroColumn; // index of 0
+    private int zeroRow;    // index of 0
     private int level;  // this state's level in a tree
     private boolean isGoalState;    // true if it is a goal state
     private char move;  // move to get to this puzzle state
     private PuzzleState prev;   // previous state
-    private int value;
+    private int value;      // stores the heuristic value of the state
 
     /**
      * CONSTRUCTORS
-     */
+     **/
     // Makes new puzzle state from puzzle instance, used during moves/ changing parents
     PuzzleState() {
         this(Puzzle.getInstance());
@@ -39,7 +38,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     /**
      * FUNCTIONS
-     */
+     **/
     // Copies state
     private void copy(PuzzleState state) {
 
@@ -56,6 +55,7 @@ public class PuzzleState {    // implements Comparable due to A*
         }
     }
 
+    // Checks if a goal state & sets the flag
     public boolean isGoalState() {
 
         for (int i = 0; i < size; i++) {
@@ -75,7 +75,10 @@ public class PuzzleState {    // implements Comparable due to A*
         return true;
     }
 
-    /** COST CALCULATION */
+    /**
+     * HEURISTICS
+     **/
+    // Methods which allow to compare value of states in A* & Best-First Search
     // Calculates the cost based on manhattan distance to a goal state
     public int manhattan(){
 
@@ -115,7 +118,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     /**
      * MOVEMENTS
-     */
+     **/
     public static PuzzleState moveLeft(PuzzleState s) {
 
         // Checks if the edge
@@ -261,7 +264,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     /**
      * GETTERS
-     */
+     **/
     public int getLevel() {
         return this.level;
     }
@@ -308,7 +311,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     /**
      * SETTERS
-     */
+     **/
     public void setLevel(int n) {
         this.level = n;
     }
@@ -340,7 +343,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     /**
      * OVERRIDES
-     */
+     **/
     @Override
     public String toString() {
 
@@ -358,7 +361,7 @@ public class PuzzleState {    // implements Comparable due to A*
 
     @Override
     public int hashCode() {
-        return this.toString().hashCode();  // generates hash code based on string
+        return this.toString().hashCode();  // generates hash code based on a string
     }
 
     @Override
@@ -383,5 +386,4 @@ public class PuzzleState {    // implements Comparable due to A*
         }
         return false; // not a PuzzleState
     }
-    // Method which allows to compare manhattan distance with A* algorithm
 }

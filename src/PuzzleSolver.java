@@ -1,17 +1,29 @@
-// Abstract class
+/**
+ * Abstract class, which is a template for Solver classes.
+ **/
 public abstract class PuzzleSolver {
 
     // The goal state, when non-null, puzzle is in goal state.
-    protected PuzzleState goal;
-    protected long time;    // time taken to solve
-    protected long memory;  // memory used to solve
-    private static final long MEGABYTE = 1024L * 1024L;
+    protected PuzzleState goal; // stores goal state
+    protected long time;    // stores time needed to solve
+    protected long memory;  // stores memory used to solve
+    private static final long MEGABYTE = 1024L * 1024L; // used to translate Bytes to MegaBytes
 
-    public abstract String solve(Puzzle puzzle, int heuristicID);    // writes string of moves of zero to reach goal from randomized
+    public abstract String solve(Puzzle puzzle, int heuristicID);   // solves the puzzle and returns sequence of moves
+
+    // Function used to change bytes to Megabytes
+    private static long bytesToMegabytes(long bytes) {
+        return bytes / MEGABYTE;
+    }
 
     public String getSequence() {
-
-        // Current state is goal state; parent state for printing history.
+        /**
+         * Gets sequence of moves from PuzzleStates and prints all information to the console.
+         * It iterates through PuzzleStates and gets their level in a tree, move that was performed, and their parent
+         * state. It outputs steps in a reverse order - from goal state to the initial state.
+         * It also provides information about time taken, memory used and the final solution sequence.
+         */
+        // Current state is set to goal state; parent state for printing history.
         PuzzleState current = goal, parent;
 
         StringBuilder builder = new StringBuilder();
@@ -26,7 +38,7 @@ public abstract class PuzzleSolver {
                     System.out.println("Program reached the goal state of the puzzle!\n");
                 }
                 else {
-                    // Prints current level in tree
+                    // Prints current level in a tree
                     System.out.println("Level in tree: " + current.getLevel()); // prints current state
                     System.out.println("Move: " + current.getMove());   // prints movement direction
 
@@ -53,9 +65,5 @@ public abstract class PuzzleSolver {
             // System ran out of memory...
             return "System ran out of memory!";
         }
-    }
-    // Function used to change bytes to Megabytes
-    private static long bytesToMegabytes(long bytes) {
-        return bytes / MEGABYTE;
     }
 }

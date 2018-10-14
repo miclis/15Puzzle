@@ -1,12 +1,14 @@
 import java.util.HashSet;
 import java.util.Set;
-
-
-// Iterative Deepened Depth-First Search (idfs).
-// Queue is used to approach the depth-first search tree.
-
+/**
+ * Iterative Deepening Recursive Depth-First Search (dfs).
+ * Only Set is used.
+ * IDS or IDDFS is a state space/graph search strategy in which a depth-limited version of depth-first search is run
+ * repeatedly with increasing depth limits until the goal is found. IDDFS is equivalent to breadth-first search,
+ * but uses much less memory; on each iteration, it visits the nodes in the search tree in the same order
+ * as depth-first search, but the cumulative order in which nodes are first visited is effectively breadth-first.
+**/
 public class IDFSSolver extends PuzzleSolver{
-
     private static IDFSSolver instance = new IDFSSolver();
     protected Set<PuzzleState> stateSet = new HashSet<PuzzleState>();
     public static final int MAX_DEPTH = 30;
@@ -98,7 +100,7 @@ public class IDFSSolver extends PuzzleSolver{
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        iterativeDeepening(state, MAX_DEPTH);   // starts dfs search
+        iterativeDeepening(state, MAX_DEPTH);   // starts iddfs search
 
         time = System.currentTimeMillis() - startTime;  // calculate time
         // Get the Java runtime

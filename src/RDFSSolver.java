@@ -1,10 +1,12 @@
 import java.util.HashSet;
 import java.util.Set;
-
-
-// Recursive Depth-First Search (rdfs).
-// Queue is used to approach the depth-first search tree.
-
+/**
+ * Recursive Depth-First Search (rdfs).
+ * Only Set is used.
+ * The algorithm starts at the root node (selecting some arbitrary node as the root node in the case of a graph)
+ * and explores as far as possible along each branch before backtracking.
+ * With some harder boards it does not find the solution, because it exceeds the recursion limit.
+ **/
 public class RDFSSolver extends PuzzleSolver{
 
     private static RDFSSolver instance = new RDFSSolver();
@@ -98,7 +100,7 @@ public class RDFSSolver extends PuzzleSolver{
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        rdfs(state);
+        rdfs(state);    // performs rdfs search
         time = System.currentTimeMillis() - startTime;  // calculate time
         // Get the Java runtime
         Runtime runtime = Runtime.getRuntime();

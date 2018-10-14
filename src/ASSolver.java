@@ -1,13 +1,15 @@
 import java.util.*;
 /**
-* A* combines the advantages of Best-first Search and Uniform Cost Search.
-* F(n) = g(n) + h(n)
-* h(n) - an estimated distance between any random vertex n and target vertex
-* g(n) - the actual distance between the start point and any vertex n
-* */
+ * A* combines the advantages of Best-first Search and Uniform Cost Search. It searches for the solution considering
+ * the heuristic value of a state.
+ * F(n) = g(n) + h(n)
+ * h(n) - heuristic value of the state
+ * g(n) - real cost getting to a particular state
+ * It takes ID of an heuristic function to use.
+**/
 public class ASSolver extends PuzzleSolver {
 
-    // For comparing manhattan distance
+    // For comparing heuristic value; lambda expression
     private Comparator<PuzzleState> statePriorityComparator = Comparator.comparingInt(PuzzleState::getValue);
 
     private static ASSolver instance = new ASSolver();

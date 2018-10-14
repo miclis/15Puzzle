@@ -2,10 +2,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
-
-// Breadth-First Search (bfs).
-// Queue is used to approach the breadth-first search tree.
-
+/**
+ * Breadth-First Search (bfs).
+ * FIFO Queue is used.
+ * It starts at the tree root and explores all of the neighbor nodes at the present depth prior to moving on to
+ * the nodes at the next depth level.
+ **/
 public class BFSSolver extends PuzzleSolver{
 
     private static BFSSolver instance = new BFSSolver();
@@ -34,7 +36,7 @@ public class BFSSolver extends PuzzleSolver{
 
         while (!stateQueue.isEmpty()){
 
-            state = stateQueue.poll();  // takes 1 element & removes it
+            state = stateQueue.poll();  // takes first element & removes it
 
             // If goal state
             if (state.isGoalState()) {

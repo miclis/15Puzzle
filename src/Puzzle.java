@@ -14,16 +14,13 @@ public class Puzzle {
 
     /** CONSTRUCTORS */
     public Puzzle(){
-        this(4);
+        this(4);    // same as the maximum row length of a board
     }
 
     public Puzzle(int sizeInput){
         initialize(sizeInput);
     }
-/**
- * 15 bfs input15 korzysta z initialize(int sizeInput), a nie tego drugiego
- * sizeInput jest zawsze 3 z konstruktora???
-*/
+
     // Initializes goal state (0 is at position [0][0])
     public void initialize(int sizeInput){
 

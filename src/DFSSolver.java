@@ -1,15 +1,17 @@
 import java.util.HashSet;
 import java.util.Stack;
 import java.util.Set;
-
-// Iterative Depth-First Search (dfs).
-// Queue is used to approach the breadth-first search tree.
-
+/**
+ * Iterative Depth-First Search (dfs).
+ * Stack is used (LIFO).
+ * The algorithm starts at the root node (selecting some arbitrary node as the root node in the case of a graph)
+ * and explores as far as possible along each branch before backtracking.
+**/
 public class DFSSolver extends PuzzleSolver{
 
     private static DFSSolver instance = new DFSSolver();
-    private Set<PuzzleState> stateSet = new HashSet<>(); // HashSet for puzzle states, eliminates duplicates
-    private Stack<PuzzleState> stateStack = new Stack<>();
+    private Set<PuzzleState> stateSet = new HashSet<>();    // HashSet for puzzle states, eliminates duplicates
+    private Stack<PuzzleState> stateStack = new Stack<>();  // LIFO
 
     private DFSSolver() {
 
@@ -33,7 +35,7 @@ public class DFSSolver extends PuzzleSolver{
 
         while (!stateStack.isEmpty()){
 
-            state = stateStack.pop();  // takes 1 element & removes it
+            state = stateStack.pop();  // takes last element & removes it
 
             // If goal state
             if (state.isGoalState()) {
@@ -84,7 +86,7 @@ public class DFSSolver extends PuzzleSolver{
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        dfs(state); // starts bfs search
+        dfs(state); // performs dfs search
 
         time = System.currentTimeMillis() - startTime;  // calculates time
         // Get the Java runtime

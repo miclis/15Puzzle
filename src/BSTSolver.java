@@ -1,5 +1,11 @@
 import java.util.*;
-
+/**
+ * Best-First Search takes into account only the heuristic value of a state.
+ * It is a greedy algorithm.
+ * F(n) = h(n)
+ * h(n) - heuristic value of the state
+ * It takes ID of an heuristic function to use.
+ **/
 public class BSTSolver extends PuzzleSolver {
 
     // For comparing manhattan distance
@@ -98,7 +104,7 @@ public class BSTSolver extends PuzzleSolver {
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        bst(state, heuristicID); // starts bfs search
+        bst(state, heuristicID); // starts bst search
 
         time = System.currentTimeMillis() - startTime;  // calculates time
         // Get the Java runtime
