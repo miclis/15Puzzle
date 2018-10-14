@@ -92,7 +92,7 @@ public class RDFSSolver extends PuzzleSolver{
 
     }
 
-    public String solve(Puzzle puzzle) {
+    public String solve(Puzzle puzzle, int h) {
 
         long startTime = System.currentTimeMillis();    // starts the timer
         goal = null;    // goal state is not found at the beginning (null)

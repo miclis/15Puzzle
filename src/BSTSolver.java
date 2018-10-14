@@ -3,7 +3,7 @@ import java.util.*;
 public class BSTSolver extends PuzzleSolver {
 
     // For comparing manhattan distance
-    private Comparator<PuzzleState> statePriorityComparator = Comparator.comparingInt(PuzzleState::getManDistance);
+    private Comparator<PuzzleState> statePriorityComparator = Comparator.comparingInt(PuzzleState::getValue);
 
     private static BSTSolver instance = new BSTSolver();
     private PriorityQueue<PuzzleState> stateQueue = new PriorityQueue<>(statePriorityComparator);
@@ -16,45 +16,23 @@ public class BSTSolver extends PuzzleSolver {
         return instance;
     }
 
-    /** COST CALCULATION */
-    // Calculates the cost based on manhattan distance to a goal state
-    private int manhattan(PuzzleState s){
 
-        int manhattanDistanceSum = 0;
-        int[][] sArray = s.getPuzzleArray();
-
-        for (int x = 0; x < s.getSize(); x++){
-            for (int y = 0; y < s.getSize(); y++){
-                int value = sArray[x][y];
-                if (value != 0){    // ommits 0 tile
-                    int goalX = (value - 1) / s.getSize();
-                    int goalY = (value - 1) % s.getSize();
-                    int dx = x - goalX;
-                    int dy = y - goalY;
-                    manhattanDistanceSum += Math.abs(dx) + Math.abs(dy);
-                }
-            }
+    protected int calculateValue (int heuristicID, PuzzleState newState){
+        int value;
+        switch (heuristicID) {
+            case 1:
+                value = newState.heuristic();
+                break;
+            case 2:
+                value = newState.manhattan();
+                break;
+            default:
+                value = 0;
         }
-        return manhattanDistanceSum;
-    }
-    // Calculates the cost based on number of misplaced tiles
-    private int heuristic(PuzzleState s){
-
-        int pathLength = 0;
-        int[][] sArray = s.getPuzzleArray();
-
-        for (int i = 0; i < s.getSize(); i++){
-            for (int j = 0; j < s.getSize(); j++){
-                if (sArray[i][j] != (i * s.getSize() + j)){
-                    pathLength += 1;
-                }
-            }
-        }
-        return pathLength;
-        //return 0;
+        return value;
     }
 
-    private void bst(PuzzleState state){
+    private void bst(PuzzleState state, int heuristicID){
 
         // Clears memory
         stateQueue.clear();
@@ -83,7 +61,7 @@ public class BSTSolver extends PuzzleSolver {
             newState = PuzzleState.moveUp(state);
             // Checks if exist and not already visited
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(heuristic(newState));
+                newState.setValue(calculateValue(heuristicID, newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -91,7 +69,7 @@ public class BSTSolver extends PuzzleSolver {
             // Move down
             newState = PuzzleState.moveDown(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(heuristic(newState));
+                newState.setValue(calculateValue(heuristicID, newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -99,7 +77,7 @@ public class BSTSolver extends PuzzleSolver {
             // Move left
             newState = PuzzleState.moveLeft(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(heuristic(newState));
+                newState.setValue(calculateValue(heuristicID, newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
@@ -107,20 +85,20 @@ public class BSTSolver extends PuzzleSolver {
             // Move right
             newState = PuzzleState.moveRight(state);
             if (newState != null && !stateSet.contains(newState)) {
-                newState.setManDistance(heuristic(newState));
+                newState.setValue(calculateValue(heuristicID, newState));
                 stateSet.add(newState);
                 stateQueue.add(newState);
             }
         }
     }
 
-    public String solve(Puzzle puzzle) {
+    public String solve(Puzzle puzzle, int heuristicID) {
 
         long startTime = System.currentTimeMillis();    // starts timer
         goal = null;    // goal state is not found at the beginning (null)
 
         PuzzleState state = new PuzzleState(puzzle);    // creates state to begin with
-        bst(state); // starts bfs search
+        bst(state, heuristicID); // starts bfs search
 
         time = System.currentTimeMillis() - startTime;  // calculates time
         // Get the Java runtime

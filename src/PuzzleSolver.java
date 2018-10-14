@@ -7,7 +7,7 @@ public abstract class PuzzleSolver {
     protected long memory;  // memory used to solve
     private static final long MEGABYTE = 1024L * 1024L;
 
-    public abstract String solve(Puzzle puzzle);    // writes string of moves of zero to reach goal from randomized
+    public abstract String solve(Puzzle puzzle, int heuristicID);    // writes string of moves of zero to reach goal from randomized
 
     public String getSequence() {
 

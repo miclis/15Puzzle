@@ -9,7 +9,7 @@ public class PuzzleState {    // implements Comparable due to A*
     private boolean isGoalState;    // true if it is a goal state
     private char move;  // move to get to this puzzle state
     private PuzzleState prev;   // previous state
-    private int manDistance;
+    private int value;
 
     /**
      * CONSTRUCTORS
@@ -73,6 +73,44 @@ public class PuzzleState {    // implements Comparable due to A*
         // All numbers in correct positions so it is a goal state
         isGoalState = true;
         return true;
+    }
+
+    /** COST CALCULATION */
+    // Calculates the cost based on manhattan distance to a goal state
+    public int manhattan(){
+
+        int manhattanDistanceSum = 0;
+        int[][] sArray = this.getPuzzleArray();
+
+        for (int x = 0; x < this.getSize(); x++){
+            for (int y = 0; y < this.getSize(); y++){
+                int value = sArray[x][y];
+                if (value != 0){    // omits 0 tile
+                    int goalX = (value - 1) / this.getSize();
+                    int goalY = (value - 1) % this.getSize();
+                    int dx = x - goalX;
+                    int dy = y - goalY;
+                    manhattanDistanceSum += Math.abs(dx) + Math.abs(dy);
+                }
+            }
+        }
+        return manhattanDistanceSum;
+    }
+    // Calculates the cost based on number of misplaced tiles
+    public int heuristic(){
+
+        int pathLength = 0;
+        int[][] sArray = this.getPuzzleArray();
+
+        for (int i = 0; i < this.getSize(); i++){
+            for (int j = 0; j < this.getSize(); j++){
+                if (sArray[i][j] != (i * this.getSize() + j)){
+                    pathLength += 1;
+                }
+            }
+        }
+        return pathLength;
+        //return 0;
     }
 
     /**
@@ -255,8 +293,8 @@ public class PuzzleState {    // implements Comparable due to A*
     }
 
     // Needed for assigning manhattan distance for comparison in A*
-    public int getManDistance() {
-        return manDistance;
+    public int getValue() {
+        return value;
     }
 
     // Get the direction of the move to get to this state.
@@ -296,8 +334,8 @@ public class PuzzleState {    // implements Comparable due to A*
         this.puzzleArray[row][column] = number;
     }
 
-    public void setManDistance(int manDistance) {
-        this.manDistance = manDistance;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     /**

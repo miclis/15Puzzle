@@ -7,8 +7,8 @@ public class PuzzleMaker {
      * 1. Puzzle size  -   number (3, 8, 15)
      * 2. Search type  -   String (bfs | dfs | rdfs | idfs | ass | bst)
      * 3. Input file name - String (name of the file located in project's dir, without ".txt")
-     * Examples of commands:    8 bfs input8_2
-     *                          15 ass input15
+     * Examples of commands:    8 bfs 8_2
+     *                          15 ass 15_1
      *
      * Input state is randomized to solve.
      */
@@ -51,6 +51,21 @@ public class PuzzleMaker {
                 System.out.println("Unable to open file '" + fileName + "'.");
                 throw new UnsupportedOperationException();
             }
+            int heuristicID = 0;
+            String heuristicIDs;
+            if (type.equals("ass") || type.equals("bst"))
+            {
+                String hRegex = "[12]?";
+                heuristicIDs = scanner.next();
+                if (!heuristicIDs.matches(hRegex))
+                {
+                    throw new UnsupportedOperationException();
+                }
+                else {
+                    heuristicID = Integer.parseInt(heuristicIDs);
+                }
+
+            }
             scanner.close();
 
             // Prints initial data:
@@ -63,22 +78,22 @@ public class PuzzleMaker {
             // Checks which search algorithm was chosen
             if (type.equals("bfs")) {
                 PuzzleSolver sol = BFSSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle,0));  // prints solution sequence
             } else if (type.equals("dfs")) {
                 PuzzleSolver sol = DFSSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle,0));  // prints solution sequence
             } else if (type.equals("rdfs")) {
                 PuzzleSolver sol = RDFSSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle,0));  // prints solution sequence
             } else if (type.equals("idfs")) {
                 PuzzleSolver sol = IDFSSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle,0));  // prints solution sequence
             } else if (type.equals("ass")) {
                 PuzzleSolver sol = ASSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle, heuristicID));  // prints solution sequence
             } else if (type.equals("bst")) {
                 PuzzleSolver sol = BSTSolver.getInstance();
-                System.out.println(sol.solve(puzzle));  // prints solution sequence
+                System.out.println(sol.solve(puzzle, heuristicID));  // prints solution sequence
             } else {
                 throw new UnsupportedOperationException();
             }

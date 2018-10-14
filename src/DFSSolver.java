@@ -78,7 +78,7 @@ public class DFSSolver extends PuzzleSolver{
         }
     }
 
-    public String solve(Puzzle puzzle) {
+    public String solve(Puzzle puzzle, int h) {
 
         long startTime = System.currentTimeMillis();    // starts timer
         goal = null;    // goal state is not found at the beginning (null)
