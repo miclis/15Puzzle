@@ -18,7 +18,7 @@ public class PuzzleMaker {
             // Reads arguments/data from console
             String sizeS = scanner.next(); // converts String to int and makes sure value is correct
             int size;
-            String regex = "[138][5]?";
+            String regex = "^3|8|15$";
             if (!sizeS.matches(regex)) {
                 throw new UnsupportedOperationException();
             } else {
