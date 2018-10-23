@@ -1,3 +1,4 @@
+import java.rmi.activation.UnknownObjectException;
 import java.util.Scanner;
 import java.io.*;
 /**
@@ -128,7 +129,7 @@ public class PuzzleMaker {
         } catch (UnsupportedOperationException uoe) {
             System.err.println("Wrong arguments!");
             System.err.println("Please type a proper puzzle size, and then"
-                    + " proper solving type (bfs or dfs), then hit enter!");
+                    + " proper solving type (bfs | dfs | rdfs | idfs | ass | bst), then hit enter!");
             System.exit(-1);    // Program closes with an error
         } finally {
             System.exit(1); // No errors were detected

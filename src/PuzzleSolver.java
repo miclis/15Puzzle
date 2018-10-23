@@ -1,3 +1,8 @@
+import com.sun.javaws.exceptions.ExitException;
+import org.omg.CORBA.UNKNOWN;
+
+import java.rmi.activation.UnknownObjectException;
+
 /**
  * Abstract class, which is a template for Solver classes.
  **/
@@ -24,46 +29,49 @@ public abstract class PuzzleSolver {
          * It also provides information about time taken, memory used and the final solution sequence.
          */
         // Current state is set to goal state; parent state for printing history.
-        PuzzleState current = goal, parent;
+        try {
+            PuzzleState current = goal, parent;
+            StringBuilder builder = new StringBuilder();
+            // Prints main output
+            if (current != null) {
+                System.out.println("This is the state sequence (reverse order): ");
+                System.out.println("Goal State: ");
+                while (true) {
+                    // If at top of the tree == initial state
+                    if (current.getLevel() == 0) {
+                        System.out.println("Program reached the goal state of the puzzle!\n");
+                    } else {
+                        // Prints current level in a tree
+                        System.out.println("Level in tree: " + current.getLevel()); // prints current state
+                        System.out.println("Move: " + current.getMove());   // prints movement direction
 
-        StringBuilder builder = new StringBuilder();
-        System.out.println("This is the state sequence (reverse order): ");
-        System.out.println("Goal State: ");
+                    }
+                    System.out.println(current.toString()); // prints current state
+                    parent = current.getPrev(); // sets parent to current state's previous state
 
-        // Prints main output
-        if (current != null) {
-            while (true) {
-                // If at top of the tree == initial state
-                if (current.getLevel() == 0) {
-                    System.out.println("Program reached the goal state of the puzzle!\n");
+                    // No parent
+                    if (parent == null)
+                        break;
+
+                    builder.append(current.getMove());  // appends move to solution
+                    current = parent;   // sets current state to parent
                 }
-                else {
-                    // Prints current level in a tree
-                    System.out.println("Level in tree: " + current.getLevel()); // prints current state
-                    System.out.println("Move: " + current.getMove());   // prints movement direction
 
-                }
-                System.out.println(current.toString()); // prints current state
-                parent = current.getPrev(); // sets parent to current state's previous state
-
-                // No parent
-                if (parent == null)
-                    break;
-
-                builder.append(current.getMove());  // appends move to solution
-                current = parent;   // sets current state to parent
+                System.out.println("This solving technique took: " + time + " ms"); //  Time taken
+                System.out.println("Memory used: " + memory + " B\t\t| (" + bytesToMegabytes(memory) + "MB)");
+                System.out.println("Solution length: " + goal.getLevel());
+                goal = null;
+                // Writes sequence of moves in reverse order (correct one)
+                return "This is the sequence of moves from initial state to the goal state: " + builder.reverse().toString();
+            } else {
+                // No solution
+                throw new UnknownObjectException("");
             }
-
-            System.out.println("This solving technique took: " + time + " ms"); //  Time taken
-            System.out.println("Memory used: " + memory + " B\t\t| (" + bytesToMegabytes(memory) + "MB)");
-            System.out.println("Solution length: " + goal.getLevel());
-            goal = null;
-            // Writes sequence of moves in reverse order (correct one)
-            return "This is the sequence of moves from initial state to the goal state: " + builder.reverse().toString();
-        } else
-            {
-            // System ran out of memory...
-            return "System ran out of memory!";
         }
+        catch (UnknownObjectException uoe)
+        {
+            System.err.println("No solution found...");
+        }
+        return "";
     }
 }
