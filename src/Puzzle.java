@@ -1,5 +1,8 @@
 import java.util.Random;
-
+/**
+ * This class holds initial board loaded from file and is used to invoke all the solving methods.
+ * It is also used in version of the program with randomized starting board. (function disabled)
+ * */
 
 public class Puzzle {
 
